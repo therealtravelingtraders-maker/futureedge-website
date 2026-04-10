@@ -727,7 +727,7 @@
       <div class="hero-ctas fade-up fade-up-3">
         <a href="#pricing" class="btn btn-blue btn-lg">Start for $4/month →</a>
         <a href="#pricing" class="btn btn-gold btn-lg">Join VIP ✦ $97/mo</a>
-        <a href="#signals" class="btn btn-ghost btn-lg">Watch demo</a>
+        <button class="btn btn-ghost btn-lg" onclick="openDemo()">&#9654; Watch demo</button>
       </div>
       <div class="hero-flags fade-up fade-up-4">
         <span>🇺🇸</span><span>🇬🇧</span><span>🇨🇦</span><span>🇦🇺</span><span>🇩🇪</span>
@@ -1066,10 +1066,547 @@
     <a href="#">Terms</a>
     <a href="#">Disclosures</a>
     <a href="#">Affiliates</a>
-    <a href="mailto:support@futureedge.pro.com">Contact</a>
+    <a href="/cdn-cgi/l/email-protection#16656366667964625670636263647373727173386664793875797b">Contact</a>
   </div>
   <div class="foot-note">© 2026 FutureEdge Pro — futureedge.pro.com<br>Past performance does not guarantee future results.</div>
 </footer>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- FUTUREEDGE PRO — AI CHAT + DEMO MODAL  -->
+<!-- Paste just before </body>              -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- ── STYLES ── -->
+<style>
+/* ── CHAT BUBBLE ── */
+.chat-bubble{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:'DM Sans',sans-serif}
+.chat-toggle{width:60px;height:60px;border-radius:50%;background:#1a56ff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(26,86,255,0.45);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+.chat-toggle:hover{transform:scale(1.08);box-shadow:0 12px 40px rgba(26,86,255,0.55)}
+.chat-toggle svg{width:26px;height:26px}
+.chat-notif{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#f05050;border-radius:50%;border:2px solid #06080f;font-size:8px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}
+.chat-window{width:360px;height:520px;background:#06080f;border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.6);opacity:0;transform:translateY(16px) scale(0.97);pointer-events:none;transition:opacity 0.22s,transform 0.22s}
+.chat-window.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.cw-header{background:#080b14;border-bottom:0.5px solid rgba(255,255,255,0.06);padding:14px 16px;display:flex;align-items:center;gap:10px}
+.cw-avatar{width:36px;height:36px;border-radius:50%;background:#1a56ff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cw-info{flex:1}
+.cw-name{font-size:13px;font-weight:500;color:#eef2ff}
+.cw-status{font-size:10px;color:#00c864;display:flex;align-items:center;gap:4px}
+.cw-status-dot{width:5px;height:5px;background:#00c864;border-radius:50%;animation:cwpulse 1.5s infinite}
+@keyframes cwpulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.cw-close{background:none;border:none;color:#3a4a6a;cursor:pointer;font-size:18px;padding:2px;line-height:1}
+.cw-close:hover{color:#eef2ff}
+.cw-lang{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.08);border-radius:5px;padding:3px 6px;font-size:9px;color:#8899bb;cursor:pointer;outline:none}
+.cw-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.cw-messages::-webkit-scrollbar{width:3px}
+.cw-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
+.cwmsg{max-width:85%;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.55;animation:msgIn 0.2s ease both}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.cwmsg-bot{background:#0d1120;border:0.5px solid rgba(255,255,255,0.06);color:#8899bb;align-self:flex-start;border-radius:4px 12px 12px 12px}
+.cwmsg-user{background:#1a56ff;color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.cwmsg-typing{background:#0d1120;border:0.5px solid rgba(255,255,255,0.06);align-self:flex-start;border-radius:4px 12px 12px 12px;padding:12px 14px}
+.typing-dots{display:flex;gap:4px}
+.typing-dot{width:6px;height:6px;background:#3a4a6a;border-radius:50%;animation:tdot 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.cw-chips{padding:8px 14px;display:flex;gap:6px;overflow-x:auto;border-top:0.5px solid rgba(255,255,255,0.04);scrollbar-width:none}
+.cw-chips::-webkit-scrollbar{display:none}
+.cwchip{font-size:10px;background:rgba(26,86,255,0.1);color:#4a7aff;border:0.5px solid rgba(26,86,255,0.25);padding:4px 10px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:background 0.15s;flex-shrink:0}
+.cwchip:hover{background:rgba(26,86,255,0.2)}
+.cw-input-row{display:flex;gap:8px;padding:10px 12px;border-top:0.5px solid rgba(255,255,255,0.06);background:#080b14}
+.cw-input{flex:1;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.08);color:#eef2ff;padding:9px 12px;border-radius:20px;font-size:12px;outline:none;font-family:inherit;transition:border-color 0.15s}
+.cw-input:focus{border-color:rgba(26,86,255,0.4)}
+.cw-input::placeholder{color:#3a4a6a}
+.cw-send{width:36px;height:36px;border-radius:50%;background:#1a56ff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s}
+.cw-send:hover{background:#4a7aff}
+.cw-send svg{width:16px;height:16px}
+.chat-teaser{background:#080b14;border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;max-width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.5);cursor:pointer;animation:teaserIn 0.4s ease both;display:none}
+@keyframes teaserIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.ct-title{font-size:12px;font-weight:500;color:#eef2ff;margin-bottom:3px}
+.ct-sub{font-size:10px;color:#3a4a6a}
+
+/* ── DEMO MODAL ── */
+.demo-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9998;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;padding:20px;backdrop-filter:blur(4px)}
+.demo-overlay.open{opacity:1;pointer-events:all}
+.demo-modal{background:#06080f;border:0.5px solid rgba(255,255,255,0.1);border-radius:20px;width:100%;max-width:860px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(20px) scale(0.97);transition:transform 0.25s;font-family:'DM Sans',sans-serif}
+.demo-overlay.open .demo-modal{transform:translateY(0) scale(1)}
+.demo-header{background:#080b14;border-bottom:0.5px solid rgba(255,255,255,0.06);padding:16px 22px;display:flex;align-items:center;justify-content:space-between}
+.demo-title{font-size:15px;font-weight:500;color:#eef2ff}
+.demo-close{background:rgba(255,255,255,0.06);border:none;color:#8899bb;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.demo-close:hover{background:rgba(255,255,255,0.1);color:#eef2ff}
+.demo-tabs{display:flex;border-bottom:0.5px solid rgba(255,255,255,0.06);background:#080b14}
+.demo-tab{flex:1;padding:12px;font-size:12px;font-weight:500;color:#3a4a6a;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.15s}
+.demo-tab.active{color:#1a56ff;border-bottom-color:#1a56ff}
+.demo-tab:hover:not(.active){color:#8899bb}
+.demo-body{flex:1;overflow-y:auto}
+.demo-panel{display:none;padding:24px}
+.demo-panel.active{display:block}
+
+/* VIDEO */
+.video-wrap{background:#000;border-radius:12px;overflow:hidden;position:relative;aspect-ratio:16/9;margin-bottom:16px}
+.video-screen{width:100%;height:100%;display:flex;flex-direction:column;background:#06080f;position:relative;overflow:hidden}
+.vprogress{position:absolute;bottom:0;left:0;height:3px;background:#1a56ff;width:0%;transition:width 0.1s linear;z-index:10}
+.video-nav{background:#080b14;border-bottom:0.5px solid rgba(255,255,255,0.06);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.vn-logo{font-size:12px;font-weight:500;letter-spacing:1.5px;color:#eef2ff}
+.vn-logo span{color:#1a56ff}
+.vn-ticker{display:flex;gap:14px}
+.vnt{display:flex;gap:4px;font-size:9px;font-family:monospace}
+.vnt-s{color:#3a4a6a}.vnt-p{color:#eef2ff}.vnt-u{color:#00c864}.vnt-d{color:#f05050}
+.video-content{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+.vslide{display:none;flex-direction:column;align-items:center;text-align:center;gap:14px;width:100%;animation:sIn 0.4s ease both}
+.vslide.active{display:flex}
+@keyframes sIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.vslide-icon{font-size:38px}
+.vslide-title{font-size:20px;font-weight:500;color:#eef2ff;font-family:'Syne',sans-serif}
+.vslide-sub{font-size:13px;color:#8899bb;max-width:400px;line-height:1.6}
+.price-highlight{background:rgba(26,86,255,0.1);border:0.5px solid rgba(26,86,255,0.25);border-radius:8px;padding:12px 24px;text-align:center}
+.ph-num{font-size:38px;font-weight:700;color:#1a56ff;font-family:'Syne',sans-serif}
+.ph-label{font-size:11px;color:#3a4a6a;margin-top:2px}
+.signal-mini{background:#0d1120;border:0.5px solid rgba(26,86,255,0.3);border-radius:10px;padding:12px 18px;min-width:200px}
+.sm-market{font-size:12px;font-weight:500;color:#eef2ff;margin-bottom:4px}
+.sm-dir{display:inline-block;background:rgba(0,200,100,0.12);color:#00c864;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;margin-bottom:6px}
+.sm-rows{display:flex;flex-direction:column;gap:3px}
+.sm-row{display:flex;justify-content:space-between;font-size:10px}
+.sm-l{color:#3a4a6a}.sm-v{color:#eef2ff;font-family:monospace}
+.video-controls{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.7);border:0.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:8px 16px;z-index:10}
+.vc-btn{background:none;border:none;color:#eef2ff;cursor:pointer;font-size:14px;padding:2px 4px}
+.vc-time{font-size:10px;color:#8899bb;font-family:monospace;min-width:60px;text-align:center}
+.vc-play{width:32px;height:32px;border-radius:50%;background:#1a56ff;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:13px;color:#fff}
+.video-captions{background:#080b14;border-top:0.5px solid rgba(255,255,255,0.06);padding:10px 16px;min-height:38px;display:flex;align-items:center}
+.caption-text{font-size:12px;color:#8899bb;line-height:1.4;font-style:italic}
+.video-chapters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.vchapter{background:#0d1120;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px;cursor:pointer;transition:border-color 0.15s}
+.vchapter:hover{border-color:#1a56ff}
+.vchapter.active{border-color:#1a56ff;background:rgba(26,86,255,0.08)}
+.vch-time{font-size:9px;color:#3a4a6a;margin-bottom:3px}
+.vch-title{font-size:11px;color:#eef2ff}
+
+/* SLIDES */
+.slide-deck{display:flex;flex-direction:column;gap:10px}
+.deck-slide{background:#0d1120;border:0.5px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color 0.15s,transform 0.15s}
+.deck-slide:hover{border-color:rgba(26,86,255,0.3);transform:translateX(4px)}
+.ds-content{display:grid;grid-template-columns:72px 1fr}
+.ds-thumb{background:#080b14;display:flex;align-items:center;justify-content:center;font-size:26px;border-right:0.5px solid rgba(255,255,255,0.06)}
+.ds-info{padding:12px 14px}
+.ds-num{font-size:9px;color:#3a4a6a;margin-bottom:3px;letter-spacing:0.5px}
+.ds-title{font-size:13px;font-weight:500;color:#eef2ff;margin-bottom:4px}
+.ds-desc{font-size:11px;color:#8899bb;line-height:1.4}
+.ds-tag{display:inline-block;font-size:9px;font-weight:500;padding:2px 8px;border-radius:10px;margin-top:6px}
+.dst-blue{background:rgba(26,86,255,0.1);color:#4a7aff}
+.dst-gold{background:rgba(201,168,76,0.1);color:#c9a84c}
+.dst-green{background:rgba(0,200,100,0.1);color:#00c864}
+
+/* QUIZ */
+.int-progress{display:flex;gap:6px;margin-bottom:16px}
+.ip-dot{height:4px;flex:1;border-radius:2px;background:rgba(255,255,255,0.08)}
+.ip-dot.done{background:#1a56ff}
+.ip-dot.active{background:rgba(26,86,255,0.4)}
+.int-question{font-size:14px;font-weight:500;color:#eef2ff;margin-bottom:12px;line-height:1.4}
+.int-options{display:flex;flex-direction:column;gap:8px}
+.int-opt{background:#0d1120;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;font-size:12px;color:#8899bb;transition:border-color 0.15s,background 0.15s;line-height:1.4}
+.int-opt:hover{border-color:rgba(26,86,255,0.3);background:rgba(26,86,255,0.04);color:#eef2ff}
+.int-opt.selected{border-color:#1a56ff;background:rgba(26,86,255,0.1);color:#eef2ff}
+.int-opt.correct{border-color:#00c864;background:rgba(0,200,100,0.1);color:#00c864}
+.int-opt.wrong{border-color:#f05050;background:rgba(240,80,80,0.06);color:#f05050}
+.io-radio{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);flex-shrink:0;margin-top:1px}
+.int-opt.selected .io-radio,.int-opt.correct .io-radio{background:#1a56ff;border-color:#1a56ff}
+.int-result{background:rgba(26,86,255,0.08);border:0.5px solid rgba(26,86,255,0.2);border-radius:8px;padding:14px 16px;display:none;margin-top:8px}
+.ir-title{font-size:13px;font-weight:500;margin-bottom:6px}
+.ir-desc{font-size:11px;color:#8899bb;line-height:1.5}
+.int-next{background:#1a56ff;color:#fff;border:none;padding:10px 20px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;margin-top:10px;display:none}
+.int-cta{background:linear-gradient(135deg,#c9a84c,#f0d080);color:#06080f;border:none;width:100%;padding:14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px;display:none}
+</style>
+
+<!-- ── AI CHAT BUBBLE HTML ── -->
+<div class="chat-bubble" id="chatBubble">
+  <div class="chat-teaser" id="chatTeaser" onclick="feOpenChat()">
+    <div class="ct-title">&#129302; Ask me anything</div>
+    <div class="ct-sub">AI trading coach &bull; answers in your language</div>
+  </div>
+  <div class="chat-window" id="chatWindow">
+    <div class="cw-header">
+      <div class="cw-avatar">&#129302;</div>
+      <div class="cw-info">
+        <div class="cw-name">FutureEdge AI Coach</div>
+        <div class="cw-status"><span class="cw-status-dot"></span> Online &bull; answers in any language</div>
+      </div>
+      <select class="cw-lang" id="chatLang" onchange="feLangChange()">
+        <option value="en">&#127760; EN</option>
+        <option value="es">&#127466;&#127480; ES</option>
+        <option value="zh">&#127464;&#127475; ZH</option>
+        <option value="ja">&#127471;&#127477; JA</option>
+        <option value="pt">&#127463;&#127479; PT</option>
+        <option value="de">&#127465;&#127466; DE</option>
+        <option value="fr">&#127467;&#127479; FR</option>
+        <option value="hi">&#127470;&#127475; HI</option>
+        <option value="ar">&#127462;&#127466; AR</option>
+      </select>
+      <button class="cw-close" onclick="feCloseChat()">&#10005;</button>
+    </div>
+    <div class="cw-messages" id="chatMessages">
+      <div class="cwmsg cwmsg-bot">Hi! I&#39;m your FutureEdge AI trading coach. Ask me anything about futures trading, our signals, strategies, or pricing &#8212; I&#39;ll answer in your language. &#128640;</div>
+    </div>
+    <div class="cw-chips">
+      <div class="cwchip" onclick="feSendChip(this.textContent)">What is ES futures?</div>
+      <div class="cwchip" onclick="feSendChip(this.textContent)">How do signals work?</div>
+      <div class="cwchip" onclick="feSendChip(this.textContent)">What does $4 plan include?</div>
+      <div class="cwchip" onclick="feSendChip(this.textContent)">Is this for beginners?</div>
+      <div class="cwchip" onclick="feSendChip(this.textContent)">What is R:R ratio?</div>
+      <div class="cwchip" onclick="feSendChip(this.textContent)">How do I start trading?</div>
+    </div>
+    <div class="cw-input-row">
+      <input class="cw-input" id="chatInput" placeholder="Ask anything about trading..." onkeydown="if(event.key==='Enter')feSendMessage()" />
+      <button class="cw-send" onclick="feSendMessage()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M14 8L2 2l3 6-3 6 12-6z" fill="#fff"/></svg>
+      </button>
+    </div>
+  </div>
+  <button class="chat-toggle" id="chatToggle" onclick="feOpenChat()">
+    <div class="chat-notif" id="chatNotif">1</div>
+    <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+<!-- ── DEMO MODAL HTML ── -->
+<div class="demo-overlay" id="demoOverlay" onclick="if(event.target===this)closeDemo()">
+  <div class="demo-modal">
+    <div class="demo-header">
+      <div class="demo-title">&#9654; FutureEdge Pro &#8212; Full Demo</div>
+      <button class="demo-close" onclick="closeDemo()">&#10005;</button>
+    </div>
+    <div class="demo-tabs">
+      <button class="demo-tab active" onclick="showDemoTab(0,this)">&#127916; Video walkthrough</button>
+      <button class="demo-tab" onclick="showDemoTab(1,this)">&#128202; Slide deck</button>
+      <button class="demo-tab" onclick="showDemoTab(2,this)">&#127918; Interactive quiz</button>
+    </div>
+    <div class="demo-body">
+
+      <!-- VIDEO -->
+      <div class="demo-panel active" id="demoPanel0">
+        <div class="video-wrap">
+          <div class="video-screen">
+            <div class="video-nav">
+              <div class="vn-logo">FUTURE<span>EDGE</span> PRO</div>
+              <div class="vn-ticker">
+                <div class="vnt"><span class="vnt-s">ES</span><span class="vnt-p">5,284</span><span class="vnt-u">+0.23%</span></div>
+                <div class="vnt"><span class="vnt-s">NQ</span><span class="vnt-p">18,392</span><span class="vnt-u">+0.30%</span></div>
+                <div class="vnt"><span class="vnt-s">CL</span><span class="vnt-p">82.14</span><span class="vnt-d">-0.46%</span></div>
+              </div>
+            </div>
+            <div class="video-content">
+              <div class="vslide active" id="vs0">
+                <div class="vslide-icon">&#128640;</div>
+                <div class="vslide-title">Welcome to FutureEdge Pro</div>
+                <div class="vslide-sub">Professional futures signals for ES, NQ, Crude Oil &amp; Gold &#8212; starting at just $4/month</div>
+                <div class="price-highlight"><div class="ph-num">$4<span style="font-size:16px;color:#3a4a6a">/mo</span></div><div class="ph-label">Less than a cup of coffee</div></div>
+              </div>
+              <div class="vslide" id="vs1">
+                <div class="vslide-icon">&#9889;</div>
+                <div class="vslide-title">Live buy/sell signals</div>
+                <div class="vslide-sub">Every signal includes entry, target, stop loss, and R:R ratio &#8212; no guessing required</div>
+                <div class="signal-mini">
+                  <div class="sm-market">ES &#8212; S&amp;P 500 Futures</div>
+                  <div class="sm-dir">LONG</div>
+                  <div class="sm-rows">
+                    <div class="sm-row"><span class="sm-l">Entry</span><span class="sm-v">5,271.25</span></div>
+                    <div class="sm-row"><span class="sm-l">Target</span><span class="sm-v" style="color:#00c864">5,289.50</span></div>
+                    <div class="sm-row"><span class="sm-l">Stop</span><span class="sm-v" style="color:#f05050">5,264.00</span></div>
+                    <div class="sm-row"><span class="sm-l">R:R</span><span class="sm-v" style="color:#f0b429">2.6:1</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="vslide" id="vs2">
+                <div class="vslide-icon">&#129302;</div>
+                <div class="vslide-title">AI coach in your language</div>
+                <div class="vslide-sub">Ask anything in English, Spanish, Chinese, Japanese, Portuguese and 4 more &#8212; answered 24/7</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                  <span style="background:rgba(26,86,255,0.1);border:0.5px solid rgba(26,86,255,0.2);color:#4a7aff;font-size:11px;padding:4px 12px;border-radius:16px">&#127482;&#127480; English</span>
+                  <span style="background:rgba(26,86,255,0.1);border:0.5px solid rgba(26,86,255,0.2);color:#4a7aff;font-size:11px;padding:4px 12px;border-radius:16px">&#127466;&#127480; Espa&#241;ol</span>
+                  <span style="background:rgba(26,86,255,0.1);border:0.5px solid rgba(26,86,255,0.2);color:#4a7aff;font-size:11px;padding:4px 12px;border-radius:16px">&#127464;&#127475; &#20013;&#25991;</span>
+                  <span style="background:rgba(26,86,255,0.1);border:0.5px solid rgba(26,86,255,0.2);color:#4a7aff;font-size:11px;padding:4px 12px;border-radius:16px">&#127471;&#127477; &#26085;&#26412;&#35486;</span>
+                  <span style="background:rgba(26,86,255,0.1);border:0.5px solid rgba(26,86,255,0.2);color:#4a7aff;font-size:11px;padding:4px 12px;border-radius:16px">+5 more</span>
+                </div>
+              </div>
+              <div class="vslide" id="vs3">
+                <div class="vslide-icon">&#128200;</div>
+                <div class="vslide-title">12+ proven strategies</div>
+                <div class="vslide-sub">Beginner to advanced &#8212; annotated charts, step-by-step guides, live examples</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:340px">
+                  <div style="background:#0d1120;border:0.5px solid rgba(0,200,100,0.2);border-radius:8px;padding:8px 10px;font-size:11px;color:#eef2ff">&#128200; ORB <span style="color:#00c864;font-size:9px">Beginner</span></div>
+                  <div style="background:#0d1120;border:0.5px solid rgba(240,180,41,0.2);border-radius:8px;padding:8px 10px;font-size:11px;color:#eef2ff">&#128260; VWAP <span style="color:#f0b429;font-size:9px">Intermediate</span></div>
+                  <div style="background:#0d1120;border:0.5px solid rgba(240,80,80,0.2);border-radius:8px;padding:8px 10px;font-size:11px;color:#eef2ff">&#127919; ICT Zones <span style="color:#f05050;font-size:9px">Advanced</span></div>
+                  <div style="background:#0d1120;border:0.5px solid rgba(240,80,80,0.2);border-radius:8px;padding:8px 10px;font-size:11px;color:#eef2ff">&#9889; S&amp;D Zones <span style="color:#f05050;font-size:9px">Advanced</span></div>
+                </div>
+              </div>
+              <div class="vslide" id="vs4">
+                <div class="vslide-icon">&#10022;</div>
+                <div class="vslide-title">Ready to trade with real edge?</div>
+                <div class="vslide-sub">Join 4,800+ traders worldwide. First month 50% off with code EDGE50.</div>
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                  <div style="text-align:center;background:#0d1120;border:0.5px solid rgba(26,86,255,0.3);border-radius:10px;padding:12px 18px"><div style="font-size:20px;font-weight:700;color:#eef2ff">$4<span style="font-size:11px;color:#3a4a6a">/mo</span></div><div style="font-size:10px;color:#3a4a6a">Starter</div></div>
+                  <div style="text-align:center;background:#0d1120;border:1.5px solid #1a56ff;border-radius:10px;padding:12px 18px"><div style="font-size:20px;font-weight:700;color:#eef2ff">$27<span style="font-size:11px;color:#3a4a6a">/mo</span></div><div style="font-size:10px;color:#3a4a6a">Pro &#9733;</div></div>
+                  <div style="text-align:center;background:#0d1120;border:1.5px solid #c9a84c;border-radius:10px;padding:12px 18px"><div style="font-size:20px;font-weight:700;color:#eef2ff">$97<span style="font-size:11px;color:#3a4a6a">/mo</span></div><div style="font-size:10px;color:#c9a84c">VIP &#10022;</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="vprogress" id="videoProgress"></div>
+          </div>
+          <div class="video-controls">
+            <button class="vc-btn" onclick="prevVSlide()">&#9198;</button>
+            <button class="vc-play" id="playBtn" onclick="togglePlay()">&#9654;</button>
+            <button class="vc-btn" onclick="nextVSlide()">&#9197;</button>
+            <span class="vc-time" id="videoTime">0:00 / 2:30</span>
+          </div>
+          <div class="video-captions">
+            <div class="caption-text" id="videoCaption">FutureEdge Pro &#8212; professional futures trading signals starting at $4/month</div>
+          </div>
+        </div>
+        <div class="video-chapters">
+          <div class="vchapter active" id="vch0" onclick="goVSlide(0)"><div class="vch-time">0:00</div><div class="vch-title">Introduction</div></div>
+          <div class="vchapter" id="vch1" onclick="goVSlide(1)"><div class="vch-time">0:30</div><div class="vch-title">Live signals</div></div>
+          <div class="vchapter" id="vch2" onclick="goVSlide(2)"><div class="vch-time">1:00</div><div class="vch-title">AI coach</div></div>
+          <div class="vchapter" id="vch3" onclick="goVSlide(3)"><div class="vch-time">1:30</div><div class="vch-title">Strategies</div></div>
+        </div>
+      </div>
+
+      <!-- SLIDES -->
+      <div class="demo-panel" id="demoPanel1">
+        <div class="slide-deck">
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#128640;</div><div class="ds-info"><div class="ds-num">SLIDE 01</div><div class="ds-title">What is FutureEdge Pro?</div><div class="ds-desc">Professional futures signals for ES, NQ, Crude Oil &amp; Gold with AI coaching in 9 languages &#8212; starting at $4/month.</div><span class="ds-tag dst-blue">Overview</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#9889;</div><div class="ds-info"><div class="ds-num">SLIDE 02</div><div class="ds-title">How live signals work</div><div class="ds-desc">Every signal fires with entry price, target, stop loss, R:R ratio, and confidence score. No analysis needed &#8212; just follow the plan.</div><span class="ds-tag dst-green">Signals</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#128202;</div><div class="ds-info"><div class="ds-num">SLIDE 03</div><div class="ds-title">The 4 markets we cover</div><div class="ds-desc">ES (S&amp;P 500), NQ (Nasdaq), CL (Crude Oil), GC (Gold) &#8212; plus micro contracts MES and MNQ for smaller accounts.</div><span class="ds-tag dst-blue">Markets</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#129302;</div><div class="ds-info"><div class="ds-num">SLIDE 04</div><div class="ds-title">AI coach &#8212; ask anything</div><div class="ds-desc">Ask any trading question in English, Spanish, Chinese, Japanese, Portuguese, German, French, Hindi, or Arabic. Answered in seconds, 24/7.</div><span class="ds-tag dst-blue">AI Coach</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#128200;</div><div class="ds-info"><div class="ds-num">SLIDE 05</div><div class="ds-title">12+ proven strategies</div><div class="ds-desc">Opening Range Breakout, VWAP Reversion, Supply &amp; Demand, ICT Kill Zones, Trend Following &#8212; with annotated charts and guides.</div><span class="ds-tag dst-green">Strategies</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#128176;</div><div class="ds-info"><div class="ds-num">SLIDE 06</div><div class="ds-title">Pricing &#8212; start for $4/month</div><div class="ds-desc">Starter $4 &bull; Pro $27 &bull; VIP $97. Annual plans save 17%. 7-day money-back guarantee. One winning trade pays for years.</div><span class="ds-tag dst-gold">Pricing</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#10022;</div><div class="ds-info"><div class="ds-num">SLIDE 07</div><div class="ds-title">VIP coaching program</div><div class="ds-desc">2&times; monthly 1-on-1 sessions, custom trade plan, direct Discord access, priority signals 15 min early. Only 20 spots per cohort.</div><span class="ds-tag dst-gold">VIP</span></div></div></div>
+          <div class="deck-slide"><div class="ds-content"><div class="ds-thumb">&#127757;</div><div class="ds-info"><div class="ds-num">SLIDE 08</div><div class="ds-title">Built for traders worldwide</div><div class="ds-desc">4,800+ members in 60+ countries. NY, London, Asian &amp; Sydney sessions covered. Multilingual support. Global SMS alerts.</div><span class="ds-tag dst-blue">Global</span></div></div></div>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="demo-panel" id="demoPanel2">
+        <div class="int-progress" id="intProgress">
+          <div class="ip-dot active"></div>
+          <div class="ip-dot"></div>
+          <div class="ip-dot"></div>
+          <div class="ip-dot"></div>
+        </div>
+        <div id="intQuizContent"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── JAVASCRIPT ── -->
+<script>
+// ───── AI CHAT ─────
+var feChatOpen = false;
+var feChatLang = 'en';
+var feChatHistory = [];
+
+setTimeout(function(){
+  var t = document.getElementById('chatTeaser');
+  if(t && !feChatOpen){ t.style.display='block'; }
+}, 9000);
+
+function feOpenChat(){
+  feChatOpen = true;
+  document.getElementById('chatWindow').classList.add('open');
+  document.getElementById('chatTeaser').style.display='none';
+  document.getElementById('chatNotif').style.display='none';
+  document.getElementById('chatToggle').style.display='none';
+  document.getElementById('chatInput').focus();
+}
+function feCloseChat(){
+  feChatOpen = false;
+  document.getElementById('chatWindow').classList.remove('open');
+  document.getElementById('chatToggle').style.display='flex';
+}
+function feLangChange(){
+  feChatLang = document.getElementById('chatLang').value;
+  var names={en:'English',es:'Spanish',zh:'Chinese',ja:'Japanese',pt:'Portuguese',de:'German',fr:'French',hi:'Hindi',ar:'Arabic'};
+  feAddBot('Language switched to '+names[feChatLang]+'. Ask me anything!');
+}
+function feAddBot(text){
+  var m=document.getElementById('chatMessages');
+  var d=document.createElement('div');
+  d.className='cwmsg cwmsg-bot';
+  d.textContent=text;
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+}
+function feAddUser(text){
+  var m=document.getElementById('chatMessages');
+  var d=document.createElement('div');
+  d.className='cwmsg cwmsg-user';
+  d.textContent=text;
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+}
+function feShowTyping(){
+  var m=document.getElementById('chatMessages');
+  var d=document.createElement('div');
+  d.className='cwmsg cwmsg-typing';
+  d.id='feTyping';
+  d.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+}
+function feHideTyping(){
+  var t=document.getElementById('feTyping');
+  if(t) t.remove();
+}
+async function feSendMessage(){
+  var inp=document.getElementById('chatInput');
+  var text=inp.value.trim();
+  if(!text) return;
+  inp.value='';
+  feAddUser(text);
+  feShowTyping();
+  feChatHistory.push({role:'user',content:text});
+  var langMap={en:'Respond in English.',es:'Responde en español.',zh:'用中文回答。',ja:'日本語で答えてください。',pt:'Responda em português.',de:'Antworte auf Deutsch.',fr:'Réponds en français.',hi:'हिंदी में जवाब दें।',ar:'أجب باللغة العربية.'};
+  var sys='You are the FutureEdge Pro AI trading coach — friendly, knowledgeable, and concise. About FutureEdge Pro: live buy/sell signals for ES, NQ, CL, GC futures. Pricing: Starter $4/month, Pro $27/month, VIP $97/month. Annual plans save 17%. AI coaching in 9 languages. 12+ strategies from beginner to advanced. SMS + email alerts. Weekly live sessions. VIP: 2x monthly 1-on-1 coaching, custom trade plan, priority signals 15 min early. 7-day money-back guarantee. 4,800+ traders in 60+ countries. 94% signal accuracy, avg R:R 2.6:1. Website: futureedge.pro.com. Answer trading questions, explain futures concepts, help visitors choose a plan. Be concise (2-4 sentences), warm, encouraging. Never guarantee profits. '+(langMap[feChatLang]||'Respond in English.');
+  try{
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:feChatHistory.slice(-10)})
+    });
+    var data=await resp.json();
+    feHideTyping();
+    var reply=(data.content&&data.content[0]&&data.content[0].text)||"I'm having a moment — please try again!";
+    feChatHistory.push({role:'assistant',content:reply});
+    feAddBot(reply);
+  } catch(e){
+    feHideTyping();
+    feAddBot('Sorry, trouble connecting right now. Email us at support@futureedge.pro.com and we\'ll help immediately!');
+  }
+}
+function feSendChip(text){
+  document.getElementById('chatInput').value=text;
+  feSendMessage();
+}
+
+// ───── DEMO MODAL ─────
+function openDemo(){
+  document.getElementById('demoOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDemo(){
+  document.getElementById('demoOverlay').classList.remove('open');
+  document.body.style.overflow='';
+  feStopPlay();
+}
+function showDemoTab(idx,btn){
+  document.querySelectorAll('.demo-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.demo-panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('demoPanel'+idx).classList.add('active');
+  if(idx===2) feInitQuiz();
+}
+
+// ───── VIDEO ─────
+var vCurrent=0, vPlaying=false, vInterval=null, vElapsed=0;
+var vTotal=150;
+var vCaptions=[
+  'FutureEdge Pro — professional futures trading signals starting at $4/month',
+  'Every signal includes entry, target, stop loss, and R:R ratio. No guessing required.',
+  'Our AI coach answers trading questions in 9 languages, 24 hours a day.',
+  'From beginner-friendly ORB to advanced ICT Kill Zones — 12+ strategies included.',
+  'Join 4,800+ traders worldwide. Start for $4/month — use code EDGE50 for 50% off.'
+];
+function goVSlide(n){
+  document.getElementById('vs'+vCurrent).classList.remove('active');
+  document.querySelectorAll('.vchapter').forEach(function(c){c.classList.remove('active');});
+  vCurrent=n;
+  document.getElementById('vs'+vCurrent).classList.add('active');
+  var ch=document.getElementById('vch'+vCurrent);
+  if(ch) ch.classList.add('active');
+  var cap=document.getElementById('videoCaption');
+  if(cap) cap.textContent=vCaptions[vCurrent]||vCaptions[0];
+  vElapsed=vCurrent*30;
+  feUpdateTime();
+}
+function nextVSlide(){ goVSlide(Math.min(vCurrent+1,4)); }
+function prevVSlide(){ goVSlide(Math.max(vCurrent-1,0)); }
+function togglePlay(){ vPlaying ? feStopPlay() : feStartPlay(); }
+function feStartPlay(){
+  vPlaying=true;
+  var pb=document.getElementById('playBtn');
+  if(pb) pb.innerHTML='&#9646;&#9646;';
+  vInterval=setInterval(function(){
+    vElapsed++;
+    feUpdateTime();
+    var prog=(vElapsed/vTotal)*100;
+    var vp=document.getElementById('videoProgress');
+    if(vp) vp.style.width=prog+'%';
+    if(vElapsed%30===0 && vCurrent<4) nextVSlide();
+    if(vElapsed>=vTotal) feStopPlay();
+  },1000);
+}
+function feStopPlay(){
+  vPlaying=false;
+  var pb=document.getElementById('playBtn');
+  if(pb) pb.innerHTML='&#9654;';
+  clearInterval(vInterval);
+}
+function feUpdateTime(){
+  var m=Math.floor(vElapsed/60), s=vElapsed%60;
+  var tm=document.getElementById('videoTime');
+  if(tm) tm.textContent=m+':'+(s<10?'0':'')+s+' / 2:30';
+}
+
+// ───── QUIZ ─────
+var qData=[
+  {q:'What does R:R ratio mean in trading?',opts:['Risk to Reward — how much you risk vs how much you can gain','Revenue to Revenue — your monthly profits','Rate to Return — your annual percentage','Range to Range — the size of a candle'],correct:0,explain:'R:R (Risk:Reward) compares how much you risk vs how much you aim to gain. A 2.6:1 R:R means for every $1 risked, you target $2.60 in profit. Our signals average 2.6:1 R:R.'},
+  {q:'What is ES futures?',opts:['A cryptocurrency token','The E-mini S&P 500 futures contract traded on CME','A forex currency pair','An options contract on Apple stock'],correct:1,explain:'ES is the E-mini S&P 500 futures contract — one of the most liquid markets in the world. Each point = $50. The micro version MES = $5 per point, great for beginners with smaller accounts.'},
+  {q:'What is the Opening Range Breakout (ORB) strategy?',opts:['Trading when the market closes at 4 PM','Buying or selling the breakout of the first 30-minute range after the NY open','Holding trades overnight for big moves','Using RSI to find overbought levels'],correct:1,explain:'ORB trades the breakout of the first 30-minute price range after the 9:30 AM NY open. Clear entry, defined stop, strong follow-through. One of our most reliable beginner strategies.'},
+  {q:'Which FutureEdge plan is right for a complete beginner?',opts:['VIP only — beginners need the most coaching','Pro — you need all signals immediately','Starter at $4/month — learn the basics, upgrade when ready','None — beginners should not trade futures'],correct:2,explain:'The $4 Starter plan is perfect for beginners. You get 1 daily ES signal, 3 core strategies, and basic AI coaching. Start here, learn the system, then upgrade to Pro when ready for all 4 markets.'}
+];
+var qStep=0, qAnswered=false;
+function feInitQuiz(){ qStep=0; qAnswered=false; feRenderQuiz(); }
+function feRenderQuiz(){
+  var d=qData[qStep];
+  var dots=document.getElementById('intProgress');
+  if(dots) dots.innerHTML=qData.map(function(_,i){ return '<div class="ip-dot'+(i<qStep?' done':i===qStep?' active':'')+'" ></div>'; }).join('');
+  var content=document.getElementById('intQuizContent');
+  if(!content) return;
+  var isLast=(qStep===qData.length-1);
+  content.innerHTML='<div class="int-question">'+d.q+'</div><div class="int-options" id="intOpts">'+d.opts.map(function(o,i){ return '<div class="int-opt" onclick="feAnswer('+i+')" id="qopt'+i+'"><div class="io-radio"></div>'+o+'</div>'; }).join('')+'</div><div class="int-result" id="intResult"><div class="ir-title" id="irTitle"></div><div class="ir-desc" id="irDesc"></div></div><button class="int-next" id="intNext" onclick="feNextQ()">'+(isLast?'See your result &rarr;':'Next question &rarr;')+'</button><button class="int-cta" id="intCta" onclick="closeDemo();document.getElementById(\'pricing\').scrollIntoView({behavior:\'smooth\'})">Start for $4/month &rarr; Use code EDGE50 for 50% off</button>';
+  qAnswered=false;
+}
+function feAnswer(idx){
+  if(qAnswered) return;
+  qAnswered=true;
+  var d=qData[qStep];
+  document.querySelectorAll('.int-opt').forEach(function(o,i){
+    if(i===idx) o.classList.add(i===d.correct?'correct':'selected wrong');
+    if(i===d.correct) o.classList.add('correct');
+  });
+  var res=document.getElementById('intResult');
+  var tit=document.getElementById('irTitle');
+  var desc=document.getElementById('irDesc');
+  if(res&&tit&&desc){
+    res.style.display='block';
+    tit.textContent=idx===d.correct?'Correct!':'Not quite — here\'s the answer:';
+    tit.style.color=idx===d.correct?'#00c864':'#f05050';
+    desc.textContent=d.explain;
+  }
+  var nx=document.getElementById('intNext');
+  if(nx) nx.style.display='block';
+  if(qStep===qData.length-1){
+    if(nx) nx.style.display='none';
+    var cta=document.getElementById('intCta');
+    if(cta) cta.style.display='block';
+  }
+}
+function feNextQ(){ qStep++; if(qStep<qData.length) feRenderQuiz(); }
+
+// Escape key closes modals
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ closeDemo(); feCloseChat(); } });
+feInitQuiz();
+</script>
 
 </body>
 </html>
