@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FutureEdge Pro — Professional Futures Trading Signals from $4/month</title>
+  <meta name="description" content="Live ES, NQ, Crude Oil & Gold futures signals with AI coaching in 9 languages. Join 4,800+ traders worldwide. Start for just $4/month." />
+  <meta property="og:title" content="FutureEdge Pro — Trade Futures with Edge" />
+  <meta property="og:description" content="Professional buy/sell signals + AI coach in your language. Starting at $4/month." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futureedge.pro.com/" />
+  <link rel="canonical" href="https://futureedge.pro.com/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1a56ff;
+      --blue-l: #4a7aff;
+      --blue-dim: rgba(26,86,255,0.12);
+      --gold: #c9a84c;
+      --gold-l: #f0d080;
+      --black: #06080f;
+      --navy: #080b14;
+      --navy2: #0d1120;
+      --border: rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.1);
+      --text: #eef2ff;
+      --text2: #8899bb;
+      --text3: #3a4a6a;
+      --green: #00c864;
+      --red: #f05050;
+      --amber: #f0b429;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--black);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+    @keyframes ticker { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(26,86,255,0.15)}50%{box-shadow:0 0 40px rgba(26,86,255,0.35)} }
+    @keyframes scanline { 0%{transform:translateY(-100%)}100%{transform:translateY(100vh)} }
+
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.2s; }
+    .fade-up-3 { animation-delay: 0.3s; }
+    .fade-up-4 { animation-delay: 0.45s; }
+    .fade-up-5 { animation-delay: 0.6s; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6,8,15,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-icon {
+      width: 30px;
+      height: 30px;
+      background: var(--blue);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-icon svg { width: 16px; height: 16px; }
+
+    .nav-wordmark {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+    .nav-wordmark .accent { color: var(--blue); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text3);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { color: var(--text2); }
+
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text2);
+      border: 1px solid var(--border2);
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--text); }
+
+    .btn-blue {
+      background: var(--blue);
+      color: #fff;
+    }
+    .btn-blue:hover { background: var(--blue-l); transform: translateY(-1px); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-l));
+      color: var(--black);
+      font-weight: 600;
+    }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,76,0.25); }
+
+    .btn-lg {
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 10px;
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: #04060d;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ticker-inner {
+      display: flex;
+      gap: 0;
+      animation: ticker 30s linear infinite;
+      white-space: nowrap;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 28px;
+      border-right: 1px solid var(--border);
+    }
+
+    .t-sym { font-family: var(--font-mono); font-size: 11px; color: var(--text3); font-weight: 500; }
+    .t-price { font-family: var(--font-mono); font-size: 11px; color: var(--text); }
+    .t-up { font-family: var(--font-mono); font-size: 11px; color: var(--green); }
+    .t-dn { font-family: var(--font-mono); font-size: 11px; color: var(--red); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      padding: 80px 32px 64px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 48px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* grid overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(26,86,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,86,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(26,86,255,0.1);
+      border: 1px solid rgba(26,86,255,0.25);
+      color: var(--blue-l);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-head);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .hero-h1 .gold { color: var(--gold); }
+    .hero-h1 .blue { color: var(--blue); }
+    .hero-h1 .outline {
+      -webkit-text-stroke: 1.5px var(--text2);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 12px;
+      max-width: 460px;
+    }
+
+    .hero-price {
+      font-size: 13px;
+      color: var(--text3);
+      margin-bottom: 28px;
+    }
+    .hero-price strong { color: var(--green); font-size: 15px; }
+
+    .hero-ctas { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+
+    .hero-flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 32px;
+    }
+    .hero-flags span { font-size: 18px; }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .hs { display: flex; flex-direction: column; gap: 3px; }
+    .hs-num {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .hs-num .unit { font-size: 16px; color: var(--blue); }
+    .hs-label { font-size: 11px; color: var(--text3); }
+
+    /* ── HERO RIGHT PANEL ── */
+    .signal-panel {
+      background: rgba(13,17,32,0.8);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      animation: glow 4s ease-in-out infinite;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sp-title { font-size: 12px; color: var(--text2); font-weight: 500; }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--green);
+      background: rgba(0,200,100,0.1);
+      border: 1px solid rgba(0,200,100,0.25);
+      padding: 3px 9px;
+      border-radius: 10px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .sig-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .sig-card {
+      background: rgba(6,8,15,0.8);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      transition: border-color 0.2s;
+    }
+    .sig-card:hover { border-color: rgba(26,86,255,0.3); }
+
+    .sc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .sc-sym { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text); }
+    .sc-sub { font-size: 9px; color: var(--text3); margin-top: 1px; }
+
+    .dir-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.5px; }
+    .dir-long { background: rgba(0,200,100,0.12); color: var(--green); }
+    .dir-short { background: rgba(240,80,80,0.1); color: var(--red); }
+
+    .sc-stats { display: flex; flex-direction: column; gap: 3px; }
+    .sc-stat { display: flex; justify-content: space-between; }
+    .sc-sl { font-size: 9px; color: var(--text3); }
+    .sc-sv { font-size: 9px; color: var(--text2); font-family: var(--font-mono); }
+
+    .conf-bar-w { height: 3px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .conf-bar { height: 3px; border-radius: 2px; background: var(--blue); }
+
+    .week-perf {
+      background: rgba(6,8,15,0.8);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .wp-label { font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+    .wp-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .wp-win { font-size: 11px; color: var(--green); }
+    .wp-loss { font-size: 11px; color: var(--red); }
+    .wp-rate { font-size: 11px; color: var(--amber); font-weight: 500; }
+    .wp-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; display: flex; }
+    .wpb-win { background: var(--green); }
+    .wpb-loss { background: var(--red); }
+
+    .lock-note { font-size: 9px; color: var(--text3); text-align: center; }
+    .lock-note a { color: var(--blue); text-decoration: none; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 80px 32px; max-width: 1200px; margin: 0 auto; }
+    .section-divider { height: 1px; background: var(--border); max-width: 100%; }
+
+    .section-eyebrow {
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-sub { font-size: 15px; color: var(--text2); margin-bottom: 40px; line-height: 1.6; }
+
+    /* ── PROOF STRIP ── */
+    .proof-strip {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .ps-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .ps-num {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .ps-label { font-size: 11px; color: var(--text3); }
+    .ps-divider { width: 1px; height: 36px; background: var(--border); }
+    .ps-stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; }
+
+    /* ── AVATARS ── */
+    .avatars { display: flex; align-items: center; }
+    .av {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .av:first-child { margin-left: 0; }
+
+    /* ── WHY GRID ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .why-card {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .why-card:hover { border-color: rgba(26,86,255,0.3); transform: translateY(-2px); }
+
+    .wc-icon { font-size: 24px; margin-bottom: 12px; }
+    .wc-title { font-family: var(--font-head); font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .wc-desc { font-size: 13px; color: var(--text3); line-height: 1.6; }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .plan-card {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 22px;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .plan-card:hover { transform: translateY(-3px); }
+    .plan-card.featured { border: 2px solid var(--blue); }
+    .plan-card.vip { border: 2px solid var(--gold); }
+
+    .plan-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 14px;
+      border-radius: 10px;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+    .pb-blue { background: var(--blue); color: #fff; }
+    .pb-gold { background: linear-gradient(135deg, var(--gold), var(--gold-l)); color: var(--black); }
+
+    .plan-name { font-size: 11px; color: var(--text3); letter-spacing: 1.5px; font-weight: 600; margin-bottom: 10px; }
+    .plan-price {
+      font-family: var(--font-head);
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .plan-price sup { font-size: 18px; vertical-align: super; font-weight: 500; }
+    .plan-cycle { font-size: 12px; color: var(--text3); margin-bottom: 20px; }
+    .plan-feats { display: flex; flex-direction: column; gap: 9px; margin-bottom: 22px; }
+    .pf { font-size: 12px; color: var(--text3); display: flex; gap: 8px; align-items: flex-start; }
+    .pf-check { color: var(--blue); flex-shrink: 0; }
+    .pf-gold { color: var(--gold); flex-shrink: 0; }
+    .pf-x { color: var(--border2); flex-shrink: 0; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .testi-card {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tc-stars { color: var(--gold); font-size: 13px; letter-spacing: 2px; }
+    .tc-text { font-size: 13px; color: var(--text2); line-height: 1.7; font-style: italic; flex: 1; }
+    .tc-author { display: flex; align-items: center; gap: 10px; }
+    .tc-av {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-l));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .tc-name { font-size: 12px; font-weight: 600; color: var(--text); }
+    .tc-role { font-size: 10px; color: var(--text3); }
+
+    /* ── GLOBAL SECTION ── */
+    .global-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .lang-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .lang-pill {
+      font-size: 12px;
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .country-card {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .cc-flag { font-size: 22px; margin-bottom: 5px; }
+    .cc-name { font-size: 11px; color: var(--text2); }
+    .cc-members { font-size: 9px; color: var(--text3); margin-top: 2px; }
+
+    /* ── FAQ ── */
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .faq-item {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .fq { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 7px; font-family: var(--font-head); }
+    .fa { font-size: 12px; color: var(--text3); line-height: 1.6; }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      text-align: center;
+      padding: 100px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(26,86,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .final-cta .section-title { font-size: clamp(32px, 5vw, 52px); margin-bottom: 14px; }
+    .final-cta .section-sub { max-width: 500px; margin: 0 auto 32px; }
+    .final-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .trust-line { font-size: 12px; color: var(--text3); margin-top: 18px; }
+    .trust-line strong { color: var(--green); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #04060d;
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .foot-logo { font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--text2); }
+    .foot-logo .accent { color: var(--blue); }
+    .foot-links { display: flex; gap: 20px; }
+    .foot-links a { font-size: 11px; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+    .foot-links a:hover { color: var(--blue); }
+    .foot-note { font-size: 10px; color: var(--text3); text-align: right; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 48px 20px; }
+      .signal-panel { display: none; }
+      .why-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+      .global-wrap { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      section { padding: 48px 20px; }
+      footer { flex-direction: column; text-align: center; }
+      .foot-note { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-icon">
+      <svg viewBox="0 0 16 16" fill="none">
+        <polyline points="1,12 5,6 9,9 15,2" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="11,2 15,2 15,6" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="nav-wordmark">FUTURE<span class="accent">EDGE</span> PRO</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#signals">Signals</a></li>
+    <li><a href="#strategies">Strategies</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#global">Global</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#pricing" class="btn btn-ghost">Log in</a>
+    <a href="#pricing" class="btn btn-blue">Start for $4 →</a>
+    <a href="#pricing" class="btn btn-gold">Join VIP ✦</a>
+  </div>
+</nav>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap" id="signals">
+  <div class="ticker-inner" id="tickerInner">
+    <!-- Duplicated for seamless loop -->
+    <div class="ticker-item"><span class="t-sym">ES</span><span class="t-price">5,284.50</span><span class="t-up">+12.25 (+0.23%)</span></div>
+    <div class="ticker-item"><span class="t-sym">NQ</span><span class="t-price">18,392.75</span><span class="t-up">+54.50 (+0.30%)</span></div>
+    <div class="ticker-item"><span class="t-sym">CL</span><span class="t-price">82.14</span><span class="t-dn">-0.38 (-0.46%)</span></div>
+    <div class="ticker-item"><span class="t-sym">GC</span><span class="t-price">2,341.80</span><span class="t-up">+8.60 (+0.37%)</span></div>
+    <div class="ticker-item"><span class="t-sym">MES</span><span class="t-price">5,284.50</span><span class="t-up">+12.25 (+0.23%)</span></div>
+    <div class="ticker-item"><span class="t-sym">MNQ</span><span class="t-price">18,392.75</span><span class="t-dn">-22.25 (-0.12%)</span></div>
+    <div class="ticker-item"><span class="t-sym">ES</span><span class="t-price">5,284.50</span><span class="t-up">+12.25 (+0.23%)</span></div>
+    <div class="ticker-item"><span class="t-sym">NQ</span><span class="t-price">18,392.75</span><span class="t-up">+54.50 (+0.30%)</span></div>
+    <div class="ticker-item"><span class="t-sym">CL</span><span class="t-price">82.14</span><span class="t-dn">-0.38 (-0.46%)</span></div>
+    <div class="ticker-item"><span class="t-sym">GC</span><span class="t-price">2,341.80</span><span class="t-up">+8.60 (+0.37%)</span></div>
+    <div class="ticker-item"><span class="t-sym">MES</span><span class="t-price">5,284.50</span><span class="t-up">+12.25 (+0.23%)</span></div>
+    <div class="ticker-item"><span class="t-sym">MNQ</span><span class="t-price">18,392.75</span><span class="t-dn">-22.25 (-0.12%)</span></div>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<div style="border-bottom:1px solid var(--border)">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow fade-up"><div class="pulse-dot"></div> Live signals active — ES · NQ · CL · GC</div>
+      <h1 class="hero-h1 fade-up fade-up-1">
+        Trade futures with<br>
+        <span class="gold">wealth-building</span><br>
+        <span class="blue">precision.</span>
+      </h1>
+      <p class="hero-sub fade-up fade-up-2">Professional buy/sell signals, AI coaching in your language, and elite 1-on-1 mentorship — built for every trader on the planet.</p>
+      <p class="hero-price fade-up fade-up-2">Start today for just <strong>$4/month</strong> — less than a cup of coffee. Cancel anytime.</p>
+      <div class="hero-ctas fade-up fade-up-3">
+        <a href="#pricing" class="btn btn-blue btn-lg">Start for $4/month →</a>
+        <a href="#pricing" class="btn btn-gold btn-lg">Join VIP ✦ $97/mo</a>
+        <a href="#signals" class="btn btn-ghost btn-lg">Watch demo</a>
+      </div>
+      <div class="hero-flags fade-up fade-up-4">
+        <span>🇺🇸</span><span>🇬🇧</span><span>🇨🇦</span><span>🇦🇺</span><span>🇩🇪</span>
+        <span>🇫🇷</span><span>🇯🇵</span><span>🇧🇷</span><span>🇮🇳</span><span>🇸🇬</span>
+        <span>🇿🇦</span><span>🇦🇪</span><span>🇲🇽</span><span>🇰🇷</span><span>🌍</span>
+      </div>
+      <div class="hero-stats fade-up fade-up-5">
+        <div class="hs"><div class="hs-num">4,800<span class="unit">+</span></div><div class="hs-label">Traders worldwide</div></div>
+        <div class="hs"><div class="hs-num">94<span class="unit">%</span></div><div class="hs-label">Signal accuracy</div></div>
+        <div class="hs"><div class="hs-num">2.6<span class="unit">:1</span></div><div class="hs-label">Avg risk/reward</div></div>
+        <div class="hs"><div class="hs-num">9<span class="unit">+</span></div><div class="hs-label">Languages</div></div>
+      </div>
+    </div>
+
+    <!-- Signal Panel -->
+    <div class="signal-panel fade-up fade-up-3">
+      <div class="sp-header">
+        <span class="sp-title">⚡ Live signals — right now</span>
+        <span class="live-badge"><span class="pulse-dot"></span>Live</span>
+      </div>
+      <div class="sig-cards">
+        <div class="sig-card">
+          <div class="sc-top">
+            <div><div class="sc-sym">ES</div><div class="sc-sub">S&P 500 · 5m</div></div>
+            <span class="dir-badge dir-long">LONG</span>
+          </div>
+          <div class="sc-stats">
+            <div class="sc-stat"><span class="sc-sl">Entry</span><span class="sc-sv">5,271.25</span></div>
+            <div class="sc-stat"><span class="sc-sl">Target</span><span class="sc-sv" style="color:var(--green)">5,289.50</span></div>
+            <div class="sc-stat"><span class="sc-sl">Stop</span><span class="sc-sv" style="color:var(--red)">5,264.00</span></div>
+            <div class="sc-stat"><span class="sc-sl">R:R</span><span class="sc-sv" style="color:var(--amber)">2.6:1</span></div>
+          </div>
+          <div class="conf-bar-w"><div class="conf-bar" style="width:91%"></div></div>
+          <div style="font-size:8px;color:var(--blue-l);margin-top:4px">91% confidence</div>
+        </div>
+        <div class="sig-card">
+          <div class="sc-top">
+            <div><div class="sc-sym">NQ</div><div class="sc-sub">Nasdaq · 15m</div></div>
+            <span class="dir-badge dir-long">LONG</span>
+          </div>
+          <div class="sc-stats">
+            <div class="sc-stat"><span class="sc-sl">Entry</span><span class="sc-sv">18,340</span></div>
+            <div class="sc-stat"><span class="sc-sl">Target</span><span class="sc-sv" style="color:var(--green)">18,410</span></div>
+            <div class="sc-stat"><span class="sc-sl">Stop</span><span class="sc-sv" style="color:var(--red)">18,315</span></div>
+            <div class="sc-stat"><span class="sc-sl">R:R</span><span class="sc-sv" style="color:var(--amber)">2.8:1</span></div>
+          </div>
+          <div class="conf-bar-w"><div class="conf-bar" style="width:87%"></div></div>
+          <div style="font-size:8px;color:var(--blue-l);margin-top:4px">87% confidence</div>
+        </div>
+        <div class="sig-card">
+          <div class="sc-top">
+            <div><div class="sc-sym">CL</div><div class="sc-sub">Crude Oil · 1H</div></div>
+            <span class="dir-badge dir-short">SHORT</span>
+          </div>
+          <div class="sc-stats">
+            <div class="sc-stat"><span class="sc-sl">Entry</span><span class="sc-sv">82.45</span></div>
+            <div class="sc-stat"><span class="sc-sl">Target</span><span class="sc-sv" style="color:var(--green)">81.80</span></div>
+            <div class="sc-stat"><span class="sc-sl">Stop</span><span class="sc-sv" style="color:var(--red)">82.70</span></div>
+            <div class="sc-stat"><span class="sc-sl">R:R</span><span class="sc-sv" style="color:var(--amber)">2.6:1</span></div>
+          </div>
+          <div class="conf-bar-w"><div class="conf-bar" style="width:79%;background:var(--amber)"></div></div>
+          <div style="font-size:8px;color:var(--amber);margin-top:4px">79% confidence</div>
+        </div>
+        <div class="sig-card">
+          <div class="sc-top">
+            <div><div class="sc-sym">GC</div><div class="sc-sub">Gold · 4H</div></div>
+            <span class="dir-badge dir-long">LONG</span>
+          </div>
+          <div class="sc-stats">
+            <div class="sc-stat"><span class="sc-sl">Entry</span><span class="sc-sv">2,338.00</span></div>
+            <div class="sc-stat"><span class="sc-sl">Target</span><span class="sc-sv" style="color:var(--green)">2,360.00</span></div>
+            <div class="sc-stat"><span class="sc-sl">Stop</span><span class="sc-sv" style="color:var(--red)">2,328.00</span></div>
+            <div class="sc-stat"><span class="sc-sl">R:R</span><span class="sc-sv" style="color:var(--amber)">2.2:1</span></div>
+          </div>
+          <div class="conf-bar-w"><div class="conf-bar" style="width:84%"></div></div>
+          <div style="font-size:8px;color:var(--blue-l);margin-top:4px">84% confidence</div>
+        </div>
+      </div>
+      <div class="week-perf">
+        <div class="wp-label">This week's performance</div>
+        <div class="wp-row">
+          <span class="wp-win">14 winners ✓</span>
+          <span class="wp-loss">3 losers ✗</span>
+          <span class="wp-rate">82% win rate</span>
+        </div>
+        <div class="wp-bar">
+          <div class="wpb-win" style="width:82%"></div>
+          <div class="wpb-loss" style="width:18%"></div>
+        </div>
+      </div>
+      <div class="lock-note">🔒 Signals locked for free users · <a href="#pricing">Unlock for $4/mo →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROOF STRIP ── -->
+<div class="proof-strip">
+  <div class="ps-item">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="avatars">
+        <div class="av" style="background:var(--blue)">JR</div>
+        <div class="av" style="background:var(--gold);color:#000">MK</div>
+        <div class="av" style="background:var(--green);color:#000">SL</div>
+        <div class="av" style="background:#f05050">RB</div>
+        <div class="av" style="background:var(--text3)">+</div>
+      </div>
+      <div class="ps-label"><strong style="color:var(--text)">4,800+ traders</strong> in 60+ countries</div>
+    </div>
+  </div>
+  <div class="ps-divider"></div>
+  <div class="ps-item">
+    <div class="ps-stars">★★★★★</div>
+    <div class="ps-label">4.9 / 5.0 rating</div>
+  </div>
+  <div class="ps-divider"></div>
+  <div class="ps-item">
+    <div class="ps-num" style="color:var(--green)">94%</div>
+    <div class="ps-label">Signal accuracy</div>
+  </div>
+  <div class="ps-divider"></div>
+  <div class="ps-item">
+    <div class="ps-num" style="color:var(--blue)">$4</div>
+    <div class="ps-label">Start today</div>
+  </div>
+  <div class="ps-divider"></div>
+  <div class="ps-item">
+    <div class="ps-num" style="color:var(--amber)">7-day</div>
+    <div class="ps-label">Money-back guarantee</div>
+  </div>
+</div>
+
+<!-- ── WHY ── -->
+<div id="strategies" style="background:var(--navy);border-bottom:1px solid var(--border)">
+  <section>
+    <div class="section-eyebrow">Why traders choose us</div>
+    <h2 class="section-title">Professional tools.<br>Accessible price.</h2>
+    <p class="section-sub">Everything you need to trade futures with confidence — from your first trade to full-time professional.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="wc-icon">⚡</div>
+        <div class="wc-title">Live buy/sell signals — 4 markets</div>
+        <div class="wc-desc">ES, NQ, Crude Oil & Gold. Every signal includes entry, target, stop, R:R ratio, and confidence score. No guessing, ever.</div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon">🤖</div>
+        <div class="wc-title">AI coach in your language</div>
+        <div class="wc-desc">Ask any trading question in English, Spanish, Chinese, Japanese, Portuguese, German, French, Hindi, or Arabic — answered instantly, 24/7.</div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon">📈</div>
+        <div class="wc-title">12+ proven strategies</div>
+        <div class="wc-desc">From Opening Range Breakout for beginners to ICT Kill Zones for advanced traders — with annotated charts and step-by-step guides.</div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon">💰</div>
+        <div class="wc-title">Starting at just $4/month</div>
+        <div class="wc-desc">Great trading education shouldn't cost thousands. One winning trade pays for 2+ years of access. That's the FutureEdge promise.</div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon">📱</div>
+        <div class="wc-title">SMS & push alerts worldwide</div>
+        <div class="wc-desc">iOS and Android app with SMS + push notification alerts the moment a signal fires. Trade from anywhere in the world.</div>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon">✦</div>
+        <div class="wc-title">1-on-1 VIP coaching</div>
+        <div class="wc-desc">Elite traders get direct coach access, custom trade plans, and weekly trade reviews. Only 20 VIP spots per cohort.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── GLOBAL ── -->
+<div id="global" style="border-bottom:1px solid var(--border)">
+  <section>
+    <div class="global-wrap">
+      <div>
+        <div class="section-eyebrow">Built for traders everywhere</div>
+        <h2 class="section-title">Trade in your language.<br>Win in any market.</h2>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px">Our AI coach and platform are fully translated into 9 languages. Signals are timed for NY, London, Asian, and Sydney sessions so traders worldwide get actionable setups at the right time.</p>
+        <div class="lang-pills">
+          <span class="lang-pill">🇺🇸 English</span>
+          <span class="lang-pill">🇪🇸 Español</span>
+          <span class="lang-pill">🇨🇳 中文</span>
+          <span class="lang-pill">🇯🇵 日本語</span>
+          <span class="lang-pill">🇧🇷 Português</span>
+          <span class="lang-pill">🇩🇪 Deutsch</span>
+          <span class="lang-pill">🇫🇷 Français</span>
+          <span class="lang-pill">🇮🇳 हिन्दी</span>
+          <span class="lang-pill">🇦🇪 العربية</span>
+        </div>
+        <p style="font-size:11px;color:var(--text3);margin-top:10px">+ AI auto-translate for all other languages</p>
+      </div>
+      <div class="country-grid">
+        <div class="country-card"><div class="cc-flag">🇺🇸</div><div class="cc-name">United States</div><div class="cc-members">1,840 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇬🇧</div><div class="cc-name">United Kingdom</div><div class="cc-members">620 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇨🇦</div><div class="cc-name">Canada</div><div class="cc-members">410 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇦🇺</div><div class="cc-name">Australia</div><div class="cc-members">380 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇧🇷</div><div class="cc-name">Brazil</div><div class="cc-members">290 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇮🇳</div><div class="cc-name">India</div><div class="cc-members">260 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇸🇬</div><div class="cc-name">Singapore</div><div class="cc-members">185 members</div></div>
+        <div class="country-card"><div class="cc-flag">🇩🇪</div><div class="cc-name">Germany</div><div class="cc-members">170 members</div></div>
+        <div class="country-card"><div class="cc-flag">🌍</div><div class="cc-name">60+ others</div><div class="cc-members">145+ members</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── PRICING ── -->
+<div id="pricing" style="background:var(--navy);border-bottom:1px solid var(--border)">
+  <section>
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">Simple, transparent pricing.</h2>
+    <p class="section-sub">Start free. Upgrade when you're ready. Cancel anytime. All plans include a 7-day money-back guarantee.</p>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-name">STARTER</div>
+        <div class="plan-price"><sup>$</sup>4</div>
+        <div class="plan-cycle">per month · cancel anytime</div>
+        <div class="plan-feats">
+          <div class="pf"><span class="pf-check">✓</span> 1 market signal daily (ES)</div>
+          <div class="pf"><span class="pf-check">✓</span> 3 core strategies</div>
+          <div class="pf"><span class="pf-check">✓</span> AI coach — basic</div>
+          <div class="pf"><span class="pf-check">✓</span> Community access</div>
+          <div class="pf"><span class="pf-check">✓</span> Daily market recap</div>
+          <div class="pf"><span class="pf-x">✗</span> <span style="color:var(--text3)">Live multi-market signals</span></div>
+          <div class="pf"><span class="pf-x">✗</span> <span style="color:var(--text3)">1-on-1 coaching</span></div>
+        </div>
+        <a href="https://buy.stripe.com/REPLACE_WITH_STARTER_LINK" class="btn btn-ghost" style="width:100%;justify-content:center;border:1px solid var(--border2);">Get started →</a>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge pb-blue">Most popular</div>
+        <div class="plan-name">PRO</div>
+        <div class="plan-price"><sup>$</sup>27</div>
+        <div class="plan-cycle">per month · cancel anytime</div>
+        <div class="plan-feats">
+          <div class="pf"><span class="pf-check">✓</span> All 4 markets — live signals</div>
+          <div class="pf"><span class="pf-check">✓</span> All 12+ strategies</div>
+          <div class="pf"><span class="pf-check">✓</span> Full AI coach · 9 languages</div>
+          <div class="pf"><span class="pf-check">✓</span> SMS + email signal alerts</div>
+          <div class="pf"><span class="pf-check">✓</span> Weekly live sessions</div>
+          <div class="pf"><span class="pf-check">✓</span> Trade journal + analytics</div>
+          <div class="pf"><span class="pf-x">✗</span> <span style="color:var(--text3)">1-on-1 coaching</span></div>
+        </div>
+        <a href="https://buy.stripe.com/REPLACE_WITH_PRO_LINK" class="btn btn-blue" style="width:100%;justify-content:center;">Start Pro →</a>
+      </div>
+      <div class="plan-card vip">
+        <div class="plan-badge pb-gold">✦ Elite</div>
+        <div class="plan-name" style="color:var(--gold)">VIP</div>
+        <div class="plan-price"><sup>$</sup>97</div>
+        <div class="plan-cycle">per month · 20 spots only</div>
+        <div class="plan-feats">
+          <div class="pf"><span class="pf-gold">✦</span> Everything in Pro</div>
+          <div class="pf"><span class="pf-gold">✦</span> 2× monthly 1-on-1 coaching</div>
+          <div class="pf"><span class="pf-gold">✦</span> Custom trade plan</div>
+          <div class="pf"><span class="pf-gold">✦</span> Direct Discord access</div>
+          <div class="pf"><span class="pf-gold">✦</span> Priority signals (15 min early)</div>
+          <div class="pf"><span class="pf-gold">✦</span> Weekly trade review</div>
+        </div>
+        <a href="https://buy.stripe.com/REPLACE_WITH_VIP_LINK" class="btn btn-gold" style="width:100%;justify-content:center;">Apply for VIP ✦</a>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--text3);margin-top:18px">Annual plans save 17% (2 months free) · All plans: 7-day money-back guarantee · Secure checkout via Stripe · PayPal · Apple Pay · Google Pay</p>
+  </section>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<div style="border-bottom:1px solid var(--border)">
+  <section>
+    <div class="section-eyebrow">Testimonials</div>
+    <h2 class="section-title">Traders around the world are winning.</h2>
+    <p class="section-sub">Real results from real members — every continent, every level.</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-text">"I started on the $4 plan from Brazil. In 3 months I upgraded to VIP. The AI coach explains everything in Portuguese — it's like having a Wall Street mentor for the price of coffee."</div>
+        <div class="tc-author">
+          <div class="tc-av">RL</div>
+          <div><div class="tc-name">Rafael L.</div><div class="tc-role">🇧🇷 Brazil · Starter → VIP</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-text">"The signals are incredibly precise. Entry, target, stop — everything defined. I've been trading ES for 2 years and FutureEdge doubled my win rate in 6 weeks."</div>
+        <div class="tc-author">
+          <div class="tc-av">MK</div>
+          <div><div class="tc-name">Marcus K.</div><div class="tc-role">🇺🇸 USA · Pro member</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-text">"Finding quality futures education in my time zone was impossible. FutureEdge covers Asian session setups and the AI coach answers in Chinese. Complete game changer."</div>
+        <div class="tc-author">
+          <div class="tc-av">WJ</div>
+          <div><div class="tc-name">Wei J.</div><div class="tc-role">🇸🇬 Singapore · Pro member</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── FAQ ── -->
+<div id="faq" style="background:var(--navy);border-bottom:1px solid var(--border)">
+  <section>
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-title">Frequently asked questions.</h2>
+    <p class="section-sub" style="margin-bottom:32px">Everything you need to know before getting started.</p>
+    <div class="faq-grid">
+      <div class="faq-item"><div class="fq">Do I need prior trading experience?</div><div class="fa">No. Our Starter plan and beginner strategies are designed for brand new traders. The AI coach will guide you step by step in your language.</div></div>
+      <div class="faq-item"><div class="fq">Is the $4 plan really just $4/month?</div><div class="fa">Yes — no hidden fees, no credit card required to try. $4/month billed monthly, or $40/year (annual saves 2 months). Cancel anytime in one click.</div></div>
+      <div class="faq-item"><div class="fq">Which futures markets do you cover?</div><div class="fa">ES (S&P 500), NQ (Nasdaq), CL (Crude Oil), and GC (Gold) — plus their micro equivalents MES and MNQ for smaller accounts.</div></div>
+      <div class="faq-item"><div class="fq">How do I receive signal alerts?</div><div class="fa">Via SMS, email, and in-app push notifications. Pro and VIP members get alerts the moment a signal fires. VIP members get signals 15 minutes before everyone else.</div></div>
+      <div class="faq-item"><div class="fq">What languages does the AI coach support?</div><div class="fa">English, Spanish, Mandarin, Japanese, Portuguese, German, French, Hindi, Arabic — plus AI auto-translation for all other languages.</div></div>
+      <div class="faq-item"><div class="fq">Is there a money-back guarantee?</div><div class="fa">Yes. All plans come with a 7-day money-back guarantee. If you're not satisfied for any reason, email us and we'll refund your payment immediately.</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ── FINAL CTA ── -->
+<div class="final-cta">
+  <div class="section-eyebrow" style="text-align:center">Ready to start?</div>
+  <h2 class="section-title">Trade futures with <span style="color:var(--gold)">real edge.</span></h2>
+  <p class="section-sub">Join 4,800+ traders worldwide. Start for less than a cup of coffee.</p>
+  <div class="final-cta-btns">
+    <a href="#pricing" class="btn btn-blue btn-lg">Start for $4/month →</a>
+    <a href="#pricing" class="btn btn-gold btn-lg">Join VIP — $97/month ✦</a>
+  </div>
+  <p class="trust-line">🔒 Secure checkout · 7-day money-back · cancel anytime · <strong>256-bit SSL</strong></p>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="foot-logo">FUTURE<span class="accent">EDGE</span> PRO</div>
+  <div class="foot-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Disclosures</a>
+    <a href="#">Affiliates</a>
+    <a href="mailto:support@futureedge.pro.com">Contact</a>
+  </div>
+  <div class="foot-note">© 2026 FutureEdge Pro — futureedge.pro.com<br>Past performance does not guarantee future results.</div>
+</footer>
+
+</body>
+</html>
